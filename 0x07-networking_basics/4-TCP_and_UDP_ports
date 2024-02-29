@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# This code prints d listining active ports
+netstat -l
