@@ -1,0 +1,4 @@
+# SSH configuration file, SSH client, connects server without password
+Host *
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
