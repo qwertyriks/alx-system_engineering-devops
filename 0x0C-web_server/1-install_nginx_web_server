@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#Installing the "nginx" from script
+
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get install nginx -y
+sudo service nginx start
+sudo echo "Hello World!" | sudo tee /var/www/html/index.html
+sudo service nginx restart
