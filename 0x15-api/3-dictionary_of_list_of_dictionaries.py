@@ -14,7 +14,8 @@ def fetch_user_data():
     # This fetchs the list of all users (employees)
     users = requests.get(url + "users").json()
 
-    # This creates a dictionary containing to-do list information of all employees
+    # This creates a dictionary containing to-do list
+    # information of all employees
     data_to_export = {}
     for user in users:
         user_id = user["id"]
