@@ -2,38 +2,40 @@
 """
 So, python script exports data in the JSON format.
 """
-
-from requests import get
 import json
+import requests
+
+
+def fetch_user_data():
+    """Fetch user information and to-do lists for all employees."""
+    # Now the Base URL for the JSONPlaceholder API
+    url = "https://jsonplaceholder.typicode.com/"
+
+    # This fetchs the list of all users (employees)
+    users = requests.get(url + "users").json()
+
+    # This creates a dictionary containing to-do list information of all employees
+    data_to_export = {}
+    for user in users:
+        user_id = user["id"]
+        user_url = url + f"todos?userId={user_id}"
+        todo_list = requests.get(user_url).json()
+
+        data_to_export[user_id] = [
+            {
+                "task": todo.get("title"),
+                "completed": todo.get("completed"),
+                "username": user.get("username"),
+            }
+            for todo in todo_list
+        ]
+
+    return data_to_export
+
 
 if __name__ == "__main__":
-    response = get('https://jsonplaceholder.typicode.com/todos/')
-    data = response.json()
+    data_to_export = fetch_user_data()
 
-    row = []
-    response2 = get('https://jsonplaceholder.typicode.com/users')
-    data2 = response2.json()
-
-    new_dict1 = {}
-
-    for j in data2:
-
-        row = []
-        for i in data:
-
-            new_dict2 = {}
-
-            if j['id'] == i['userId']:
-
-                new_dict2['username'] = j['username']
-                new_dict2['task'] = i['title']
-                new_dict2['completed'] = i['completed']
-                row.append(new_dict2)
-
-        new_dict1[j['id']] = row
-
-    with open("todo_all_employees.json",  "w") as f:
-
-        json_obj = json.dumps(new_dict1)
-        f.write(json_obj)
-        
+    # This writes the data to a JSON file
+    with open("todo_all_employees.json", "w") as jsonfile:
+        json.dump(data_to_export, jsonfile, indent=4)
